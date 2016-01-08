@@ -12,9 +12,9 @@ From the App Store, download OS X El Capitain *but do not begin the installation
 
 Examine the output to determine the device number for your external drive. It will have the form `diskN` or, alternatively, if you want to put the installer on a specific partition, `diskNsX`. Create the bootable installer (**NOTE:** this will erase the disk!):
 
-    sudo /Applications/Install\ OS\ X\ El\ Capitan.app/Contents/Resources/createinstallmedia
+    sudo /Applications/Install\ OS\ X\ El\ Capitan.app/Contents/Resources/createinstallmedia --volume /Volumes/Untitled --applicationpath Applications/Install\ OS\ X\ El\ Capitan.app --nointeraction
 
-and replace /dev/diskN with the number of your external disk (or /dev/diskNsX if using a partition).
+and replace `/Volumes/Untitled` with the name of your external disk.
 
 ## Install OS X
 
