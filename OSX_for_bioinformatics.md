@@ -32,7 +32,9 @@ El Capitan comes with a feature called System Integrity Protection, which locks 
 
 2.  From the Utilties menu, open Terminal and type
 
-    csrutil disable
+```
+csrutil disable
+```
     
 3.  Reboot the computer.
 
