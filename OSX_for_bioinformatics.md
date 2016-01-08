@@ -167,6 +167,8 @@ brew install zsh
 ```
 
 ## Install libraries and other key dependencies
+
+```
 brew install autoconf cmake xz automake pkg-config fontconfig jpeg libtiff libpng libffi doxygen
 brew install libevent --with-doxygen
 brew install freetype
@@ -177,7 +179,7 @@ brew install boost expat tcl-tk
 brew install open-mpi parallel
 brew install openssh openssl
 brew install ncurses
-
+```
 
 ## Configure Perl
 
