@@ -26,7 +26,7 @@ Select "Install OS X" from the menu and select your hard disk (i.e. the one you 
 
 ## Disable System Integrity Protection
 
-El Capitan comes with a feature called System Integrity Protection, which locks down several low-level operating system directories (such as `/usr`) from being written to, even with root access. To disable SIP:
+El Capitan comes with a feature called System Integrity Protection, which locks down several low-level operating system directories (such as `/usr`) from being written to, even with root access. This becomes important later when installing Perl modules as root, for example. You can disable SIP at any time, however. To disable SIP:
 
 1.  Reboot the computer and hold down Option + R. This will boot into Recovery Mode.
 
@@ -77,6 +77,8 @@ Enter your administrator password when prompted.
     
 ## Optional: Upgrade bash
 
+Upgrading bash will get you on par with the versions shipped with the latest Linux distributions, and should be at least more on par with versions you might encounter on compute clusters.
+
     brew install bash
     sudo chsh -s /usr/local/bin/bash $(whoami)
     
@@ -101,8 +103,13 @@ Follow this [reference](https://www.topbug.net/blog/2013/04/14/install-and-use-g
     export PATH="$(brew --prefix coreutils)/libexec/gnubin:$PATH"
     alias edit='open -a /Applications/TextEdit.app/'
     alias rc='source ~/.bash_profile'
+    export PATH="/usr/local/sbin:$PATH"
 
-Save the file. In terminal, type
+Make sure the file ends with a blank line and save the file. In terminal, type
+
+    source ~/.bash_profile
+
+From this point forward, you can accomplish the same command (because we have it aliased) by typing
 
     rc
     
@@ -171,16 +178,13 @@ brew install zsh
 ## Install libraries and other key dependencies
 
 ```
-brew install autoconf cmake xz automake pkg-config fontconfig jpeg libtiff libpng libffi doxygen
+brew install cmake automake fontconfig jpeg libtiff libpng libffi doxygen
 brew install libevent --with-doxygen
 brew install freetype
 brew install glib
 brew install gd --with-freetype
 brew install libcaca libconfig libtasn1 libtool libunistring zlib icu4c
-brew install boost expat tcl-tk
-brew install open-mpi parallel
-brew install openssh openssl
-brew install ncurses
+brew install expat tcl-tk open-mpi parallel openssl ncurses
 ```
 
 ## Configure Perl
@@ -214,7 +218,7 @@ The following is a list of Perl modules I've compiled as being dependencies for 
     sudo -H pip install requests[security]
     sudo -H pip install --upgrade pip setuptools
     sudo -H pip install matplotlib
-    sudo -H pip install biopython cython mpi4py rpython pysam checkm-genome jcvi pandas mkdocs sphinx bx-python jupyter virtualenv ngslib
+    sudo -H pip install biopython cutadapt cython mpi4py rpython pysam checkm-genome jcvi pandas mkdocs sphinx bx-python jupyter virtualenv ngslib
 
 ### Optional: Install QIIME
 
@@ -229,7 +233,7 @@ The following is a list of Perl modules I've compiled as being dependencies for 
     sudo -H pip3 install requests[security]
     sudo -H pip3 install --upgrade pip setuptools
     sudo -H pip3 install matplotlib
-    sudo -H pip3 install biopython cython mpi4py rpython pysam checkm-genome jcvi pandas mkdocs sphinx bx-python jupyter virtualenv
+    sudo -H pip3 install biopython cutadapt cython mpi4py rpython pysam checkm-genome jcvi pandas mkdocs sphinx bx-python jupyter virtualenv
 
 ## Install other Homebrew packages
 
