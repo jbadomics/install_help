@@ -129,15 +129,17 @@ Now that Homebrew is installed, we want to use Homebrew to install other softwar
     touch ~/.bash_profile
     open -a /Applications/TextEdit.app/ ~/.bash_profile
 
-Follow this [reference](https://www.topbug.net/blog/2013/04/14/install-and-use-gnu-command-line-tools-in-mac-os-x/). In TextEdit, add these lines to your `.bash_profile`:
+The `.bash_profile` contains user-specific configuration for your `bash` shell sessions. You can make it as simple or complex as you wish; however, if you want to be able to invoke any program from anywhere on your computer, you must explicitly append your `$PATH` variable in your `.bash_profile`. It can also be useful to alias certain long or frequently executed commands to simpler ones. My `.bash_profile` is provided in this repo for some examples.
 
+This [reference](https://www.topbug.net/blog/2013/04/14/install-and-use-gnu-command-line-tools-in-mac-os-x/) describes how to install GNU core utilities and how to set your `.bash_profile` to call GNU commands before the default BSD flavors of the same commands that ship with OS X. In TextEdit, add these lines to your `.bash_profile`:
 
+    export PATH=/usr/local/sbin:$PATH
     export PATH="$(brew --prefix coreutils)/libexec/gnubin:$PATH"
     alias edit='open -a /Applications/TextEdit.app/'
     alias rc='source ~/.bash_profile'
-    export PATH="/usr/local/sbin:$PATH"
+    alias man='_() { echo $1; man -M $(brew --prefix)/opt/coreutils/libexec/gnuman $1 1>/dev/null 2>&1;  if [ "$?" -eq 0 ]; then man -M $(brew --prefix)/opt/coreutils/libexec/gnuman $1; else man $1; fi }; _'
 
-Make sure the file ends with a blank line and save the file. In terminal, type
+The `edit` and `rc` aliases are optional but helpful, and you can call them whatever you want. The `man` alias should be left alone, as it makes sure to call the appropriate `man` page for GNU commands. Make sure the file ends with a blank line and save the file. In terminal, type
 
     source ~/.bash_profile
 
@@ -145,7 +147,7 @@ From this point forward, you can accomplish the same command (because we have it
 
     rc
     
-To tell `bash` to refresh itself with the settings you just added to your `.bash_profile`.
+to tell `bash` to refresh itself with the settings you just added to your `.bash_profile`.
 
 ## Install GCC
 
@@ -184,6 +186,18 @@ brew install watch
 brew install wdiff --with-gettext
 brew install wget
 ```
+
+Edit your `~/.bash_profile` and add the following:
+
+```
+alias find='gfind'
+alias locate='glocate'
+alias oldfind='goldfind'
+alias updatedb='gupdatedb'
+alias xargs='gxargs'
+```
+
+Installing `findutils --with-default-names` causes a `brew doctor` error about certain packages failing to build. We can silence this error by installing GNU `findutils` commands with a `g` prefix, and simply alias the GNU commands to their default names.
 
 ## Install/upgrade other utilities
 

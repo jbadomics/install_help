@@ -1,0 +1,103 @@
+
+shopt -s checkwinsize
+eval $(resize > /dev/null 2>&1)
+
+# reset PATH to default
+PATH=$(getconf PATH)
+
+# add paths to executables
+PATH=.:$PATH
+PATH=/usr/local/bin:$PATH
+PATH=/usr/local/bin/bin:$PATH
+PATH=/usr/local/sbin:$PATH
+PATH=/sw:$PATH
+PATH=/sw/scripts:$PATH
+PATH=/sw/signalp-4.1:$PATH
+PATH=~/Documents/Bond/Bioinformatics/scripts:$PATH
+PATH=/sw/breseq-0.27.1-MacOSX-10.7+/bin:$PATH
+PATH=/sw/get_homologues-macosx-20150814:$PATH
+PATH=/sw/phylosift_v1.0.1:$PATH
+PATH=/sw/idba-1.1.2/bin:$PATH
+PATH=/sw/pullseq/bin:$PATH
+PATH=/sw/circos-0.69/bin:$PATH
+PATH=/sw/sumaclust_v1.0.10:$PATH
+PATH=/sw/ssaha2_v2.5.5_x86_64:$PATH
+PATH=/sw/bbmap:$PATH
+PATH=/sw/mothur:$PATH
+
+export PATH="$(brew --prefix coreutils)/libexec/gnubin:$PATH"
+
+set -o noclobber # prevents existing files from being overwritten
+
+# export MANPATH=/usr/local/opt/coreutils/libexec/gnuman
+alias man='_() { echo $1; man -M $(brew --prefix)/opt/coreutils/libexec/gnuman $1 1>/dev/null 2>&1;  if [ "$?" -eq 0 ]; then man -M $(brew --prefix)/opt/coreutils/libexec/gnuman $1; else man $1; fi }; _'
+
+alias find='gfind'
+alias locate='glocate'
+alias oldfind='goldfind'
+alias updatedb='gupdatedb'
+alias xargs='gxargs'
+alias ls='ls --color'
+alias vpn='open -a /Applications/Cisco/Cisco\ AnyConnect\ Secure\ Mobility\ Client.app/'
+alias ff='open -a /Applications/Firefox.app/'
+alias fz='open -a /Applications/FileZilla.app/'
+alias bu='brew update'
+alias bd='brew doctor'
+alias bc='brew cleanup --force'
+alias bp='brew prune'
+alias upgrade='for keg in $(brew list); do brew upgrade $keg; done'
+alias update='brew update && brew cleanup --force && brew prune && brew doctor'
+alias grep='grep --color=auto'
+alias rc='source ~/.bash_profile'
+alias edit='open -a /Applications/TextEdit.app/'
+alias tw='open -a /Applications/TextWrangler.app/'
+alias preview='open -a /Applications/Preview.app/'
+alias gepard='java -Xmx2g -jar /sw/gepard-1.30/gepard.jar &'
+alias esom='/sw/ESOM/bin/esomana &'
+alias perlpath='perl -e "print \"@INC\"" | tr " " "\n" | sort'
+alias perlmodules='~/.listmodules.pl 2> /dev/null'
+alias pythonmodules='pip freeze'
+alias printpath='/bin/echo $PATH | tr ":" "\n"'
+alias sortpath='printpath | sort -f 2> /dev/null'
+alias show='defaults write com.apple.finder AppleShowAllFiles YES; killall Finder /System/Library/CoreServices/Finder.app'
+alias hide='defaults write com.apple.finder AppleShowAllFiles NO; killall Finder /System/Library/CoreServices/Finder.app'
+alias openwith='/System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/LaunchServices.framework/Versions/A/Support/lsregister -kill -r -domain local -domain user;killall Finder;echo "Open With has been rebuilt, Finder will relaunch"'
+
+function gcc_on {
+	export CC=$(which gcc-5)
+	export CXX=$(which g++-5)
+	export CPP=$(which cpp-5)
+	export LD=$(which gcc-5)
+	alias c++='echo $(which c++-5)'
+	alias g++='echo $(which g++-5)'
+	alias gcc='echo $(which gcc-5)'
+	alias cpp='echo $(which cpp-5)'
+	alias ld='echo $(which gcc-5)'
+	alias cc='echo $(which gcc-5)'
+
+	gcc_version=$(gcc-5 --version | head -n 1)
+	gcc_path=$(brew info gcc | grep '/usr' | sed 's/ .*/\/bin/')
+	echo "now using Homebrew-installed GNU $gcc_version at $gcc_path"
+	echo "setting build flags and aliases"
+	echo "CC=$CC"
+	echo "CXX=$CXX"
+	echo "CPP=$CPP"
+	echo "LD=$LD"
+	echo "NOTE: these paths are symlinked to $gcc_path by Homebrew"
+}
+
+function gcc_off {
+	unset CC
+	unset CXX
+	unset CPP
+	unset LD
+	unalias c++ >/dev/null 2>&1
+	unalias g++ >/dev/null 2>&1
+	unalias gcc >/dev/null 2>&1
+	unalias cpp >/dev/null 2>&1
+	unalias ld >/dev/null 2>&1
+	unalias cc >/dev/null 2>&1
+
+	echo "unsetting build flags and aliases for GNU gcc"
+	echo "now using $(gcc --version 2> /dev/null | grep Apple) at $(which gcc)"
+}
