@@ -66,11 +66,7 @@ csrutil disable
 
 4.  Launch Xcode and agree to the terms and conditions.
 
-5.  Install the command line developer tools. Open Terminal and type
-
-```
-xcode-select --install
-```
+5.  Install the command line developer tools. Open Terminal and type `xcode-select --install`.
 
 6.  Install XQuartz. Go to [http://www.xquartz.org](http://www.xquartz.org) and download the latest version. The installer will guide you through the setup process (be patient).
 
