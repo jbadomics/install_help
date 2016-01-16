@@ -46,7 +46,7 @@ Select "Install OS X" from the menu and select your hard disk (i.e. the one you 
 
 ## Disable System Integrity Protection
 
-El Capitan comes with a feature called System Integrity Protection, which locks down several low-level operating system directories (such as `/usr`) from being written to, even with root access. This becomes important later when installing things like Perl modules as root, for example. You can disable SIP at any time, however. To disable SIP:
+El Capitan comes with a feature called System Integrity Protection, which locks down several low-level operating system directories (such as `/usr`) from being written to, even with root access. This becomes important later when installing things like Perl modules as root, for example. You can disable SIP at any time; however, it's best to get it out of the way before we begin installing anything. To disable SIP:
 
 1.  Reboot the computer and hold down Option + R. This will boot into Recovery Mode.
 
