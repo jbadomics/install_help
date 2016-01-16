@@ -129,7 +129,7 @@ Now that Homebrew is installed, we want to use Homebrew to install other softwar
     touch ~/.bash_profile
     open -a /Applications/TextEdit.app/ ~/.bash_profile
 
-The `.bash_profile` contains user-specific configuration for your `bash` shell sessions. You can make it as simple or complex as you wish; however, if you want to be able to invoke any program from anywhere on your computer, you must explicitly append your `$PATH` variable in your `.bash_profile`. It can also be useful to alias certain long or frequently executed commands to simpler ones. My `.bash_profile` is provided in [here](https://github.com/jbadomics/install_help/blob/example_bash_profile) for some examples.
+The `.bash_profile` contains user-specific configuration for your `bash` shell sessions (on Linux, it is called `~/.bashrc`). You can make it as simple or complex as you wish; however, if you want to be able to invoke any program from anywhere on your computer, you must explicitly append your `$PATH` variable in your `.bash_profile`. It can also be useful to alias certain long or frequently executed commands to simpler ones. My `.bash_profile` is provided in [here](https://github.com/jbadomics/install_help/blob/example_bash_profile) for some examples.
 
 This [reference](https://www.topbug.net/blog/2013/04/14/install-and-use-gnu-command-line-tools-in-mac-os-x/) describes how to install GNU core utilities and how to set your `.bash_profile` to call GNU commands before the default BSD flavors of the same commands that ship with OS X. In TextEdit, add these lines to your `.bash_profile`:
 
