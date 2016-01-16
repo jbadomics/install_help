@@ -12,13 +12,15 @@ This procedure is designed to make OS X behave as closely as possible to Linux s
 
 ## Important disclaimers
 
-1.  I am a microbiologist, not a computer scientist or software engineer. It is possible (likely) that some of the steps I describe may be overkill, poorly/inaccurately/incompletely explained, redundant, or sub-optimal. If that's the case, please help me improve this page by submitting a pull request!
+1.  This page assumes you have administrator (i.e. `sudo`) privileges.
 
-2.  The tools I recommend installing are, therefore, biased towards those used for working with microbial genomes. However, you can (should!) follow theses instructions if you work in another area of genomics/bioinformatics since many popular tools can be installed safely with [Homebrew](http://brew.sh).
+2.  I am a microbiologist, not a computer scientist or software engineer. It is possible (likely) that some of the steps I describe may be overkill, poorly/inaccurately/incompletely explained, redundant, or sub-optimal. If that's the case, please help me improve this page by submitting a pull request!
 
-3.  The procedure relies on making a clean installation (NOT an upgrade from an existing OS X) on an empty hard drive. This guarantees that bits of detritus from previous versions don't get carried along and gum up the works. [Daniel](http://thebondlab.org/people) discovered after several upgrades that OS X had somehow maintained drivers for his early-2000s Palm Pilot. A clean installation guarantees that no programs get installed and no files get transferred without your explicit permission.
+3.  The tools I recommend installing are, therefore, biased towards those used for working with microbial genomes. However, you can (should!) follow theses instructions if you work in another area of genomics/bioinformatics since many popular tools can be installed safely with [Homebrew](http://brew.sh).
 
-4.  Installation recommendations should **NOT** be misinterpreted as either implicit or explicit endorsements of certain tools or packages over others. As with any bioinformatics analysis, [Vince Buffalo](http://vincebuffalo.com) says it best: never trust your tools (or your data). This post simply describes how to *install* software in a well-controlled, organized fashion and makes no recommendations for use of said software, as no single tool or set of parameters will apply universally to every question or dataset.
+4.  The procedure relies on making a clean installation (NOT an upgrade from an existing OS X) on an empty hard drive. This guarantees that bits of detritus from previous versions don't get carried along and gum up the works. [Daniel](http://thebondlab.org/people) discovered after several upgrades that OS X had somehow maintained drivers for his early-2000s Palm Pilot. A clean installation guarantees that no programs get installed and no files get transferred without your explicit permission.
+
+5.  Installation recommendations should **NOT** be misinterpreted as either implicit or explicit endorsements of certain tools or packages over others. As with any bioinformatics analysis, [Vince Buffalo](http://vincebuffalo.com) says it best: never trust your tools (or your data). This post simply describes how to *install* software in a well-controlled, organized fashion and makes no recommendations for use of said software, as no single tool or set of parameters will apply universally to every question or dataset.
 
 ## Before you begin
 
