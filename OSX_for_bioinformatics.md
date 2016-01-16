@@ -1,10 +1,28 @@
+# Turn your Mac into a bioinformatics workhorse
+
+This page provides step-by-step instructions for setting up and optimizing Mac OS X to run several bioinformatics tools. I recently used this procedure to upgrade both my 2011 MacBook Pro (retrofitted with a 480 GB SSD) and the [Bond Lab's](http://thebondlab.org) 2009 Mac Pro (2 quad-core Intel Xeon processors, retrofitted with 32 GB total RAM and 2 SSDs) to run OS X 10.11 (El Capitan).
+
+## Why not just use Linux?
+
+Good question. I use Linux a lot too: I have my laptop set up as a dual-boot with Ubuntu, and the [Minnesota Supercomputing Intitute](http://www.msi.umn.edu) is obviously Linux-based. In certain situations Linux is unavoidable and that is not a bad thing as much of the popular Linux distributions are open source and most bioinformatics tools are designed for a Linux environment. But OS X is more familiar to many scientists just getting into bioinformatics/genomics, and since, like Linux, OS X is Unix-based, working in OS X can be a good stepping stone towards gaining experience and practice at the command line.
+
+This procedure is designed to make OS X behave as closely as possible to Linux so that skills, tools, and pipelines can be more readily transferred to a Linux environment down the road.
+
+## Important disclaimers
+
+1.  I am a microbiologist, not a computer scientist or software engineer. It is possible (likely) that some of the steps I describe may be overkill, redundant, or sub-optimal. If that's the case, please let me know by submitting a pull request.
+
+2.  The tools I recommend installing are, therefore, biased towards those used for working with microbial genomes. However, you can (should!) follow theses instructions if you work in another area of genomics/bioinformatics since many popular tools can be installed safely with [Homebrew](http://brew.sh).
+
+3.  The procedure relies on making a clean installation (NOT an upgrade from an existing OS X) on an empty hard drive. This guarantees that bits of detritus from previous versions don't get carried along and gum up the works. [Daniel](http://thebondlab.org/people) discovered after several upgrades that OS X had somehow maintained drivers for his early-2000s Palm Pilot. A clean installation guarantees that no programs get installed and no files get transferred without your explicit permission.
+
 ## Before you begin
 
 **Back up all data!** This procedure will erase your hard drive so make sure you have a readable copy (ideally, copies) of your important files on a separate disk.
 
 ## Create bootable OS X installer
 
-Find a USB stick or external hard drive with at least 8 GB capacity, and transfer any data off of it as this procedure will erase the disk.
+Find a USB stick or external hard drive with at least 8 GB capacity, and transfer any important data off of it as this procedure will erase the disk.
 
 From the App Store, download OS X El Capitain *but do not begin the installation process*. In Finder, open Applications. You should see an app called "Install OS X El Capitan." Insert your (bootable) USB stick or external hard drive and type
 
@@ -12,7 +30,7 @@ From the App Store, download OS X El Capitain *but do not begin the installation
 
 Examine the output to determine the device number for your external drive. It will have the form `diskN` or, alternatively, if you want to put the installer on a specific partition, `diskNsX`. Create the bootable installer (**NOTE:** this will erase the disk!):
 
-    sudo /Applications/Install\ OS\ X\ El\ Capitan.app/Contents/Resources/createinstallmedia --volume /Volumes/Untitled --applicationpath Applications/Install\ OS\ X\ El\ Capitan.app --nointeraction
+    sudo /Applications/Install\ OS\ X\ El\ Capitan.app/Contents/Resources/createinstallmedia --volume /Volumes/Untitled --applicationpath /Applications/Install\ OS\ X\ El\ Capitan.app --nointeraction
 
 and replace `/Volumes/Untitled` with the name of your external disk.
 
@@ -48,11 +66,11 @@ csrutil disable
 
 4.  Launch Xcode and agree to the terms and conditions.
 
-5.  Open Terminal and type
+5.  Install the command line developer tools. Open Terminal and type
 
-    xcode-select --install
-
-to install the command line developer tools.
+```
+xcode-select --install
+```
 
 6.  Install XQuartz. Go to [http://www.xquartz.org](http://www.xquartz.org) and download the latest version. The installer will guide you through the setup process (be patient).
 
@@ -117,11 +135,11 @@ To tell `bash` to refresh itself with the settings you just added to your `.bash
 
 ## Install GCC
 
-Apple's C/C++ compiler is called `clang` and is aliased to `gcc`, which means that any time you need to compile source C/C++, `clang` will run by default. Unfortunately, many programs will fail to build with `clang` and instead need the GNU Compiler Collection (`gcc`). We can install this with Homebrew:
+Apple's C/C++ compiler is called `clang` and is aliased to `gcc`, which means that any time you need to compile source C/C++, `clang` will run by default. Unfortunately, many programs will fail to build with `clang` and instead need the GNU Compiler Collection (`gcc`). We can install GNU gcc with Homebrew:
 
     brew install gcc --without-multilib
 
-Be patient as this can take 30-60 minutes to complete the `make bootstrap` step. This installs the latest GNU `gcc` with [OpenMP](http://openmp.org/wp/) support.
+Be patient as this can take 30-60 minutes to complete the `make bootstrap` step. This installs the latest GNU `gcc` with [OpenMP](http://openmp.org/wp/) support. **It does not** erase or replace Apple's default `clang` installation; instead, GNU `gcc` can be invoked as necessary to compile certain programs.
 
 ## Install GNU core utilities
 
@@ -204,7 +222,7 @@ This will return you to a normal command prompt.
 
 ### Install Perl Modules
 
-The following is a list of Perl modules I've compiled as being dependencies for several bioinformatics programs, so it's best to install them upfront and not worry about them later:
+The following is a list of Perl modules I've collected as dependencies for several useful and/or popular bioinformatics programs, so it's best to install them upfront and not to have to worry about them later:
 
     sudo cpanm GD
     sudo cpanm GD::Polyline
@@ -225,6 +243,7 @@ The following is a list of Perl modules I've compiled as being dependencies for 
     cd ~/Downloads
     wget http://sourceforge.net/projects/pycogent/files/PyCogent/1.5.3/PyCogent-1.5.3.tgz
     cp ~/Downloads/PyCogent-1.5.3/include/array_interface.h /usr/local/Cellar/python/2.7.11/Frameworks/Python.framework/Versions/2.7/include/python2.7/
+    cd /usr/local/Cellar/python/2.7.11/Frameworks/Python.framework/Versions/2.7/include/python2.7/
     ln -s /usr/local/lib/python2.7/site-packages/numpy/core/include/numpy
     sudo -H env CC=/usr/local/bin/gcc-5 pip install --global-option build_ext qiime
 
@@ -244,6 +263,7 @@ The following is a list of Perl modules I've compiled as being dependencies for 
     brew install clustal-w --cc=gcc-5
     brew install glimmer3 --cc=gcc-5
     brew install amos --cc=gcc-5
-    brew install mysql
+    brew install diamond --cc=gcc-5
+    brew install mysql # follow post-installation instructions
 
-    brew install a5 apple-gcc42 aragorn arb barrnap bdw-gc bedtools bioawk bison blast bowtie bowtie2 cabal-install cairo cd-hit cloog cowsay ddate diamond docbook docbook-xsl docker doxygen emboss entr exonerate fasta fastqc fastx_toolkit figlet flex flint fortune gdbm ghc glew gperftools gsl guile highlight hmmer htslib igv igvtools imagemagick imlib2 infernal kmergenie less libvpx lua lzip megahit mercurial minced most mummer nettle pandoc picard-tools pixman prodigal prokka quast r raxml readline repeatmasker rmblast rsync s-lang s3cmd samtools screen seqtk sqlite subversion szip tbb tbl2asn tinyxml2 tmux toilet trf trimmomatic trnascan wxmac xmlstarlet xmlto xmltoman
+    brew install a5 apple-gcc42 aragorn arb barrnap bdw-gc bedtools bioawk bison blast bowtie bowtie2 cabal-install cairo cd-hit cloog cowsay ddate docbook docbook-xsl docker doxygen emboss entr exonerate fasta fastqc fastx_toolkit figlet flex flint fortune gdbm ghc glew gperftools gsl guile highlight hmmer htslib igv igvtools imagemagick imlib2 infernal kmergenie less libvpx lua lzip megahit mercurial minced most mummer nettle pandoc picard-tools pixman prodigal prokka quast r raxml readline repeatmasker rmblast rsync s-lang s3cmd samtools screen seqtk sqlite subversion szip tbb tbl2asn tinyxml2 tmux toilet trf trimmomatic trnascan wxmac xmlstarlet xmlto xmltoman
