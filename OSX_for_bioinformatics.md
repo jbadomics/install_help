@@ -2,19 +2,23 @@
 
 This page provides step-by-step instructions for setting up and optimizing Mac OS X to run several bioinformatics tools. I recently used this procedure to upgrade both my 2011 MacBook Pro (retrofitted with a 480 GB SSD) and the [Bond Lab's](http://thebondlab.org) 2009 Mac Pro (2 quad-core Intel Xeon processors, retrofitted with 32 GB total RAM and 2 SSDs) to run OS X 10.11 (El Capitan).
 
+The procedures I describe are geared towards novice and intermediate users, and if you are not super comfortable at the command line yet you can copy-paste.
+
 ## Why not just use Linux?
 
-Good question. I use Linux a lot too: I have my laptop set up as a dual-boot with Ubuntu, and the [Minnesota Supercomputing Intitute](http://www.msi.umn.edu) is obviously Linux-based. In certain situations Linux is unavoidable and that is not a bad thing as much of the popular Linux distributions are open source and most bioinformatics tools are designed for a Linux environment. But OS X is more familiar to many scientists just getting into bioinformatics/genomics, and since, like Linux, OS X is Unix-based, working in OS X can be a good stepping stone towards gaining experience and practice at the command line.
+Good question. I use Linux a lot too: I have my laptop set up as a dual-boot with Ubuntu, and the [Minnesota Supercomputing Intitute](http://www.msi.umn.edu) which I often use also runs Linux. In certain situations Linux is unavoidable--that is not a bad thing as much of the popular Linux distributions are open source and most bioinformatics tools are designed for a Linux environment. But OS X is more familiar to many scientists just getting into bioinformatics/genomics, and since, like Linux, OS X is Unix-based, working in OS X can be a good stepping stone towards gaining experience and practice in a Unix-based environment.
 
 This procedure is designed to make OS X behave as closely as possible to Linux so that skills, tools, and pipelines can be more readily transferred to a Linux environment down the road.
 
 ## Important disclaimers
 
-1.  I am a microbiologist, not a computer scientist or software engineer. It is possible (likely) that some of the steps I describe may be overkill, redundant, or sub-optimal. If that's the case, please let me know by submitting a pull request.
+1.  I am a microbiologist, not a computer scientist or software engineer. It is possible (likely) that some of the steps I describe may be overkill, poorly/inaccurately/incompletely explained, redundant, or sub-optimal. If that's the case, please help me improve this page by submitting a pull request!
 
 2.  The tools I recommend installing are, therefore, biased towards those used for working with microbial genomes. However, you can (should!) follow theses instructions if you work in another area of genomics/bioinformatics since many popular tools can be installed safely with [Homebrew](http://brew.sh).
 
 3.  The procedure relies on making a clean installation (NOT an upgrade from an existing OS X) on an empty hard drive. This guarantees that bits of detritus from previous versions don't get carried along and gum up the works. [Daniel](http://thebondlab.org/people) discovered after several upgrades that OS X had somehow maintained drivers for his early-2000s Palm Pilot. A clean installation guarantees that no programs get installed and no files get transferred without your explicit permission.
+
+4.  Installation recommendations should **NOT** be misinterpreted as either implicit or explicit endorsements of certain tools or packages over others. As with any bioinformatics analysis, [Vince Buffalo](http://vincebuffalo.com) says it best: never trust your tools (or your data). This post simply describes how to *install* software in a well-controlled, organized fashion and makes no recommendations for use of said software, as no single tool or set of parameters will apply universally to every question or dataset.
 
 ## Before you begin
 
@@ -24,11 +28,7 @@ This procedure is designed to make OS X behave as closely as possible to Linux s
 
 Find a USB stick or external hard drive with at least 8 GB capacity, and transfer any important data off of it as this procedure will erase the disk.
 
-From the App Store, download OS X El Capitain *but do not begin the installation process*. In Finder, open Applications. You should see an app called "Install OS X El Capitan." Insert your (bootable) USB stick or external hard drive and type
-
-    diskutil list
-
-Examine the output to determine the device number for your external drive. It will have the form `diskN` or, alternatively, if you want to put the installer on a specific partition, `diskNsX`. Create the bootable installer (**NOTE:** this will erase the disk!):
+From the App Store, download OS X El Capitain *but do not begin the installation process*. In Finder, open Applications. You should see an app called "Install OS X El Capitan." Insert your (bootable) USB stick or external hard drive and open Finder to determine the name of your external disk. If you prefer, you can also erase the disk using Disk Utility and simply select the default "Untitled" name. The command below assumes the disk is named "Untitled" but modify as needed. Open Terminal and type: (**NOTE:** this will erase the disk!):
 
     sudo /Applications/Install\ OS\ X\ El\ Capitan.app/Contents/Resources/createinstallmedia --volume /Volumes/Untitled --applicationpath /Applications/Install\ OS\ X\ El\ Capitan.app --nointeraction
 
@@ -38,13 +38,13 @@ and replace `/Volumes/Untitled` with the name of your external disk.
 
 Reboot the computer and, with your installer disk connected, hold down the Option key. You will see a menu with different boot options. Select the yellow icon labeled "Install OS X El Capitan."
 
-When the installer loads, run disk utility. Select your internal hard drive and click "erase." Give the disk a name, and select GUID partition table and OS X Extended (Journaled). When the command completes, quit disk utility.
+When the installer loads, run Disk Utility. Select your internal hard drive and click "erase." Give the disk a name, and select GUID partition table and OS X Extended (Journaled). When the command completes, quit Disk Utility.
 
 Select "Install OS X" from the menu and select your hard disk (i.e. the one you just erased and reformatted) as the installation target. The system will reboot and eventually ask you for configuration/preferences. **DO NOT transfer any files at this time.**
 
 ## Disable System Integrity Protection
 
-El Capitan comes with a feature called System Integrity Protection, which locks down several low-level operating system directories (such as `/usr`) from being written to, even with root access. This becomes important later when installing Perl modules as root, for example. You can disable SIP at any time, however. To disable SIP:
+El Capitan comes with a feature called System Integrity Protection, which locks down several low-level operating system directories (such as `/usr`) from being written to, even with root access. This becomes important later when installing things like Perl modules as root, for example. You can disable SIP at any time, however. To disable SIP:
 
 1.  Reboot the computer and hold down Option + R. This will boot into Recovery Mode.
 
@@ -54,11 +54,11 @@ El Capitan comes with a feature called System Integrity Protection, which locks 
 csrutil disable
 ```
     
-3.  Reboot the computer.
+Then reboot the computer.
 
 ## Prepare the OS for Homebrew
 
-1.  In System Preferences --> Energy Saver, uncheck "turn off hard disks whenever possible" and slide the "put computer to sleep" bar to "never." (Some software installations take > 10 minutes and this guarantees that they will complete.)
+1.  In System Preferences --> Energy Saver, uncheck "turn off hard disks whenever possible" and slide the "put computer to sleep" bar to "never." (Some software installations take > 10 minutes and this guarantees that they will complete.) Once software is installed, you can re-adjust Energy Saver options to your liking.
 
 2.  Install OS updates from App store.
 
@@ -74,11 +74,13 @@ csrutil disable
 
 8.  Install the latest Java Development Kit (JDK). Go [here](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) and select `jdk-8u66-macosx-x64.dmg`. Download and run the installer.
 
-9.  Reboot.
+9.  Open TextEdit. You will use TextEdit to modify some plain text files below, so you will need to change preferences for it to behave properly. Under 'Format', select 'plain text'. Uncheck all boxes *except* 'check spelling as you type'. On the 'Open and Save' tab, uncheck 'add .txt extension to plain text files'. Quit TextEdit.
+
+10.  Reboot.
 
 ## Install Homebrew
 
-Open a Terminal and type
+Homebrew is a wonderful package manager for OS X. Most Linux distributions ship with package managers that oversee proper installation (and uninstallation) of software, and Homebrew behaves similarly on OS X. Open a Terminal and type
 
     ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 
@@ -88,13 +90,27 @@ Enter your administrator password when prompted.
 
     brew update
     brew doctor
+
+To learn more about Homebrew's features, type `brew help` or `man brew`. The following are some of the most common commands:
+
+    brew update # scans the Homebrew GitHub repo for updates; always run this first
+    brew install <package> OPTIONS # install packages, with optional arguments
+    brew uninstall --force <package> # completely uninstalls a package
+    brew cleanup # remove outdated software and source code
+    brew prune # trim unused/dead-end symbolic links
+    brew doctor # scan your system and Homebrew installation for errors and provide recommended fixes
     
 ## Optional: Upgrade bash
 
-Upgrading bash will get you on par with the versions shipped with the latest Linux distributions, and should be at least more on par with versions you might encounter on compute clusters.
+Upgrading bash will get you on par with the versions shipped with the latest Linux distributions, and should be at least more on par with versions you might encounter on compute clusters. OS X ships with version 3.2; the latest is version 4.3.
 
     brew install bash
+
+Now we have `bash` in two places: `/bin/bash` (default OS X, version 3.2) and `/usr/local/bin/bash` (Homebrew, version 4.3). We need to tell the system that we want the more recent bash version as our default shell:
+
     sudo chsh -s /usr/local/bin/bash $(whoami)
+
+Finally, we need to tell the system that the new bash is an acceptable shell for the system to use:
     
     open -a /Applications/TextEdit.app/ /etc/shells
     
@@ -102,7 +118,7 @@ Add the following line to the end of the file:
 
     /usr/local/bin/bash
 
-Save the file and close TextEdit.
+Save the file and quit TextEdit.
 
 ## Create a bash profile
 
