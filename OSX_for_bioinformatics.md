@@ -72,9 +72,9 @@ Then reboot the computer.
 
 6.  Install XQuartz. Go to [http://www.xquartz.org](http://www.xquartz.org) and download the latest version. The installer will guide you through the setup process (be patient).
 
-7.  Install the latest Java SE Runtime Environment (JRE). Go [here](http://www.oracle.com/technetwork/java/javase/downloads/jre8-downloads-2133155.html) and select `jre-8u66-macosx-x64.dmg`. Download and run the installer.
+7.  Install the latest Java SE Runtime Environment (JRE). Go [here](http://www.oracle.com/technetwork/java/javase/downloads) and click on 'JRE download', then select `jre-8u66-macosx-x64.dmg`. Download and run the installer.
 
-8.  Install the latest Java Development Kit (JDK). Go [here](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) and select `jdk-8u66-macosx-x64.dmg`. Download and run the installer.
+8.  Install the latest Java Development Kit (JDK). Go [here](http://www.oracle.com/technetwork/java/javase/downloads) and click on 'JDK download', then select `jdk-8u66-macosx-x64.dmg`. Download and run the installer.
 
 9.  Open TextEdit. You will use TextEdit to modify some plain text files below, so you will need to change preferences for it to behave properly. Under 'Format', select 'plain text'. Uncheck all boxes *except* 'check spelling as you type'. On the 'Open and Save' tab, uncheck 'add .txt extension to plain text files'. Quit TextEdit.
 
