@@ -269,8 +269,9 @@ If at any point you discover a Perl module that you're missing, installation sho
 
     sudo cpanm <Module::Name>
 
-Occasionally it can be helpful to audit which Perl modules you already have installed. I have a simple alias called `perlmodules` to a script [`.listmodules.pl`](https://github.com/jbadomics/install_help/blob/master/.listmodules.pl) which prints a list of installed modules to STDOUT. If you wish, clone the script into your home directory and add the following alias to your `.bash_profile`:
+Occasionally it can be helpful to audit which Perl modules you already have installed. I have a simple alias called `perlmodules` to a script [`.listmodules.pl`](https://github.com/jbadomics/install_help/blob/master/.listmodules.pl) which prints a list of installed modules to STDOUT. If you wish, clone the script into your home directory, make it executable, and add the following alias to your `.bash_profile`:
 
+    chmod +x ~/.listmodules.pl
     alias perlmodules='~/.listmodules.pl 2> /dev/null'
 
 ## Configure Python
