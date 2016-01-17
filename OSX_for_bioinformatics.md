@@ -237,27 +237,41 @@ brew install expat tcl-tk open-mpi parallel openssl ncurses
 
 ## Configure Perl
 
+Many of my most frustrating installations somehow always seemed to involve missing Perl modules. Perl ships with its own shell called `cpan` which is used to intall Perl modules. While you *can* install modules locally (i.e. in your home directory), I've found that you're far less likely to encounter Perl problems if you install modules as root.
+
+We're going to use `cpan` to install another module installer called `cpanminus`, but before we get to that point, we need to configure `cpan` itself. Enter the `cpan` shell as root:
+
     sudo cpan
 
-In CPAN shell, **configure manually!** Use sudo. All other settings can be left as defaults.
+You will be prompted to 'configure as much as possible automatically'. At this point, type `N` and **configure cpan manually!** It will first prompt you to select how you wish to install modules. Type `sudo`. You will then be taken through a few dozen other settings, all of which can be left as defaults. Eventually `cpan` will ask to select appropriate mirror sites for FTP, and you will be shown a prompt that looks like
 
-When the cpan prompt returns, type
+    cpan[1]>
 
-    install CPAN
+When this pan prompt appears, type
+
+    install CPAN # this and the following command will self-upgrade CPAN
     reload cpan
     install App::cpanminus
     exit
 
-This will return you to a normal command prompt.
+This will return you to a normal command prompt, except now you will have `cpanminus` installed. **Note** that you can also install `cpanminus` with Homebrew, but I've found that it's best to use Perl's native setup to install Perl modules (the same goes for Python - see below).
 
 ### Install Perl Modules
 
-The following is a list of Perl modules I've collected as dependencies for several useful and/or popular bioinformatics programs, so it's best to install them upfront and not to have to worry about them later:
+Now that we have `cpanminus` installed, we will use it to install several Perl modules as root. The following is a list of Perl modules I've collected as dependencies for several useful and/or popular bioinformatics programs, so it's best to install them upfront and not to have to worry about them later:
 
-    sudo cpanm GD
-    sudo cpanm GD::Polyline
+    sudo cpanm GD  # this module is notorious for failing to build, but will work here
+    sudo cpanm GD::Polyline  # redundant; GD::Polyline is required to run circos
 
     sudo cpanm Bio::Perl Carp Clone CPAN::Meta CPAN::Meta::Check CPAN::Meta::YAML Config::General Cwd Data::Dumper Devel::OverloadInfo Devel::StackTrace Digest::MD5 Exception::Class Exporter::Tiny ExtUtils::Install File::Basename File::Copy File::Spec::Functions File::Spec::Link File::Temp File::Find::Rule::Perl File::HomeDir FindBin Font::TTF::Font Getopt::Long IO::File List::MoreUtils List::Util Mac::SystemDirectory Math::Bezier Math::BigFloat Math::Round Math::VecStat Memoize Module::Build Module::Build::Tiny Module::Metadata Module::Runtime Module::Runtime::Conflicts Moose Number::Format Parse::CPAN::Meta POSIX Readonly Regexp::Common SVG Set::IntSpan Statistics::Basic Statistics::Descriptive Storable Sub::Identify Sys::Hostname Test::CleanNamespaces Test::Harness Test::Most Test::Warnings Text::Balanced Text::Format Time::HiRes XML::Simple XML::Twig
+
+If at any point you discover a Perl module that you're missing, installation should be as simple as
+
+    sudo cpanm <Module::Name>
+
+Occasionally it can be helpful to audit which Perl modules you already have installed. I have a simple alias called `perlmodules` to a script [`.listmodules.pl`](https://github.com/jbadomics/install_help/blob/master/.listmodules.pl) which prints a list of installed modules to STDOUT. If you wish, clone the script into your home directory and add the following alias to your `.bash_profile`:
+
+    alias perlmodules='~/.listmodules.pl 2> /dev/null'
 
 ## Configure Python
 
