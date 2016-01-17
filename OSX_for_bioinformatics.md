@@ -76,7 +76,7 @@ Then reboot the computer.
 
 8.  Install the latest Java Development Kit (JDK). Go [here](http://www.oracle.com/technetwork/java/javase/downloads) and click on 'JDK download', then select `jdk-8u66-macosx-x64.dmg`. Download and run the installer.
 
-9. Install legacy Java (v. 1.6). This version is required to run [Artemis]() as well as older versions of the Adobe Creative Suite. It will not conflict with your existing Java 1.8 installations. Click [here](https://support.apple.com/kb/DL1572?locale=en_US) and click on the 'Download' button, then run the installer.
+9. Install legacy Java (v. 1.6). This version is required to run [Artemis](http://www.sanger.ac.uk/science/tools/artemis) as well as older versions of the Adobe Creative Suite. It will not conflict with your existing Java 1.8 installations. Click [here](https://support.apple.com/kb/DL1572?locale=en_US) and click on the 'Download' button, then run the installer.
 
 10.  Open TextEdit. You will use TextEdit to modify some plain text files below, so you will need to change preferences for it to behave properly. Under 'Format', select 'plain text'. Uncheck all boxes *except* 'check spelling as you type'. On the 'Open and Save' tab, uncheck 'add .txt extension to plain text files'. Quit TextEdit.
 
