@@ -297,7 +297,7 @@ Occasionally it can be helpful to audit which Perl modules you already have inst
     sudo -H pip3 install requests[security]
     sudo -H pip3 install --upgrade pip setuptools
     sudo -H pip3 install matplotlib
-    sudo -H pip3 install biopython cutadapt cython mpi4py rpython pysam checkm-genome jcvi pandas mkdocs sphinx bx-python jupyter virtualenv
+    sudo -H pip3 install biopython cutadapt cython mpi4py rpython pysam checkm-genome jcvi pandas mkdocs sphinx bx-python jupyter virtualenv snakemake
 
 ## Install other Homebrew packages
 
