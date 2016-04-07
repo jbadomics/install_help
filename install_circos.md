@@ -2,7 +2,7 @@
 
 This repo contains instructions for installing [Circos](http://circos.ca) on Linux (Ubuntu 14.04 and CentOS 6.5) and Mac (OS 10.11 El Capitan).
 
-In all cases you should consider adding the /your/path/to/circos-0.69/bin to your $PATH variable in `~/.bashrc` (Linux) or `~/.bash_profile` (Mac).
+In all cases you should consider adding `/your/path/to/circos-0.69/bin` to your `$PATH` variable in `~/.bashrc` (Linux) or `~/.bash_profile` (Mac).
 
 **NOTE:** These instructions assume root privileges.
 
