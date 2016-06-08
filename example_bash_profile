@@ -64,18 +64,18 @@ alias hide='defaults write com.apple.finder AppleShowAllFiles NO; killall Finder
 alias openwith='/System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/LaunchServices.framework/Versions/A/Support/lsregister -kill -r -domain local -domain user;killall Finder;echo "Open With has been rebuilt, Finder will relaunch"'
 
 function gcc_on {
-	export CC=$(which gcc-5)
-	export CXX=$(which g++-5)
-	export CPP=$(which cpp-5)
-	export LD=$(which gcc-5)
-	alias c++='echo $(which c++-5)'
-	alias g++='echo $(which g++-5)'
-	alias gcc='echo $(which gcc-5)'
-	alias cpp='echo $(which cpp-5)'
-	alias ld='echo $(which gcc-5)'
-	alias cc='echo $(which gcc-5)'
+	export CC=$(which gcc-6)
+	export CXX=$(which g++-6)
+	export CPP=$(which cpp-6)
+	export LD=$(which gcc-6)
+	alias c++='echo $(which c++-6)'
+	alias g++='echo $(which g++-6)'
+	alias gcc='echo $(which gcc-6)'
+	alias cpp='echo $(which cpp-6)'
+	alias ld='echo $(which gcc-6)'
+	alias cc='echo $(which gcc-6)'
 
-	gcc_version=$(gcc-5 --version | head -n 1)
+	gcc_version=$(gcc-6 --version | head -n 1)
 	gcc_path=$(brew info gcc | grep '/usr' | sed 's/ .*/\/bin/')
 	echo "now using Homebrew-installed GNU $gcc_version at $gcc_path"
 	echo "setting build flags and aliases"
