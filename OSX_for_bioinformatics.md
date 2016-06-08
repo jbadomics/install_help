@@ -290,7 +290,7 @@ Occasionally it can be helpful to audit which Perl modules you already have inst
     cp ~/Downloads/PyCogent-1.5.3/include/array_interface.h /usr/local/Cellar/python/2.7.11/Frameworks/Python.framework/Versions/2.7/include/python2.7/
     cd /usr/local/Cellar/python/2.7.11/Frameworks/Python.framework/Versions/2.7/include/python2.7/
     ln -s /usr/local/lib/python2.7/site-packages/numpy/core/include/numpy
-    sudo -H env CC=/usr/local/bin/gcc-5 pip install --global-option build_ext qiime
+    sudo -H env CC=/usr/local/bin/gcc-6 pip install --global-option build_ext qiime
 
 ### Install Python3 modules
 
@@ -301,15 +301,15 @@ Occasionally it can be helpful to audit which Perl modules you already have inst
 
 ## Install other Homebrew packages
 
-    brew install boost --cc=gcc-5
-    brew install source-highlight --cc=gcc-5
-    brew install highlight --cc=gcc-5
-    brew install hdf5 --cc=gcc-5
-    brew install blasr --cc=gcc-5
-    brew install clustal-w --cc=gcc-5
-    brew install glimmer3 --cc=gcc-5
-    brew install amos --cc=gcc-5
-    brew install diamond --cc=gcc-5
+    brew install boost --cc=gcc-6
+    brew install source-highlight --cc=gcc-6
+    brew install highlight --cc=gcc-6
+    brew install hdf5 --cc=gcc-6
+    brew install blasr --cc=gcc-6
+    brew install clustal-w --cc=gcc-6
+    brew install glimmer3 --cc=gcc-6
+    brew install amos --cc=gcc-6
+    brew install diamond --cc=gcc-6
     brew install mysql # follow post-installation instructions
 
     brew install a5 apple-gcc42 aragorn arb barrnap bdw-gc bedtools bioawk bison blast bowtie bowtie2 cabal-install cairo cd-hit cloog cowsay ddate docbook docbook-xsl docker doxygen emboss entr exonerate fasta fastqc fastx_toolkit figlet flex flint fortune gdbm ghc glew gperftools gsl guile hmmer htslib igv igvtools imagemagick imlib2 infernal kmergenie less libvpx lua lzip megahit mercurial minced most mummer nettle pandoc picard-tools pixman prodigal prokka quast r raxml readline repeatmasker rmblast rsync s-lang s3cmd samtools screen seqtk sqlite subversion szip tbb tbl2asn tinyxml2 tmux toilet trf trimmomatic trnascan wxmac xmlstarlet xmlto xmltoman
