@@ -153,11 +153,15 @@ to tell `bash` to refresh itself with the settings you just added to your `.bash
 
 ## Install GCC
 
-Apple's C/C++ compiler is called `clang` and is aliased to `gcc`, which means that any time you need to compile source C/C++, `clang` will run by default. Unfortunately, many programs will fail to build with `clang` and instead need the GNU Compiler Collection (`gcc`). We can install GNU gcc with Homebrew:
+Apple's C/C++ compiler is called `clang` and is aliased to `gcc`, which means that any time you need to compile source C/C++, `clang` will run by default. Unfortunately, many programs will fail to build with `clang` and instead need the GNU Compiler Collection (`gcc`). We can install GNU gcc v. 6.1 with Homebrew:
 
     brew install gcc --without-multilib
 
-Be patient as this can take 30-60 minutes to complete the `make bootstrap` step. This installs the latest GNU `gcc` with [OpenMP](http://openmp.org/wp/) support. **It does not** erase or replace Apple's default `clang` installation; instead, GNU `gcc` can be invoked as necessary to compile certain programs.
+Some programs won't compile with the latest version of `gcc`, but fortunately homebrew allows us to install multiple versions of the same thing:
+
+    brew install homebrew/versions/gcc5 --without-multilib
+
+Be patient as each step can take 30-60 minutes to complete the `make bootstrap` step. This installs the latest GNU `gcc` with [OpenMP](http://openmp.org/wp/) support. **It does not** erase or replace Apple's default `clang` installation; instead, GNU `gcc` can be invoked as necessary to compile certain programs.
 
 ## Install GNU core utilities
 
@@ -305,11 +309,11 @@ Occasionally it can be helpful to audit which Perl modules you already have inst
     brew install source-highlight --cc=gcc-6
     brew install highlight --cc=gcc-6
     brew install hdf5 --cc=gcc-6
-    brew install blasr --cc=gcc-6
+    brew install blasr --cc=gcc-5
     brew install clustal-w --cc=gcc-6
     brew install glimmer3 --cc=gcc-6
-    brew install amos --cc=gcc-6
-    brew install diamond --cc=gcc-6
+    brew install amos --cc=gcc-5
+    brew install diamond --cc=gcc-5
     brew install mysql # follow post-installation instructions
 
     brew install a5 apple-gcc42 aragorn arb barrnap bdw-gc bedtools bioawk bison blast bowtie bowtie2 cabal-install cairo cd-hit cloog cowsay ddate docbook docbook-xsl docker doxygen emboss entr exonerate fasta fastqc fastx_toolkit figlet flex flint fortune gdbm ghc glew gperftools gsl guile hmmer htslib igv igvtools imagemagick imlib2 infernal kmergenie less libvpx lua lzip megahit mercurial minced most mummer nettle pandoc picard-tools pixman prodigal prokka quast r raxml readline repeatmasker rmblast rsync s-lang s3cmd samtools screen seqtk sqlite subversion szip tbb tbl2asn tinyxml2 tmux toilet trf trimmomatic trnascan wxmac xmlstarlet xmlto xmltoman
