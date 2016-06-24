@@ -207,6 +207,8 @@ Installing `findutils --with-default-names` causes a `brew doctor` error about c
 
 ## Install/upgrade other utilities
 
+Xcode now includes Perl 5.18 and so it is not necessary to `brew install perl`.
+
 ````
 brew install emacs
 brew install gpatch
@@ -218,7 +220,6 @@ brew install file-formula
 brew install git
 brew install less
 brew install openssh
-brew install perl518
 brew install python
 brew install python3
 brew install rsync
@@ -264,12 +265,12 @@ This will return you to a normal command prompt, except now you will have `cpanm
 
 Now that we have `cpanminus` installed, we will use it to install several Perl modules as root. The following is a list of Perl modules I've collected as dependencies for several useful and/or popular bioinformatics programs, so it's best to install them upfront and not to have to worry about them later:
 
-    sudo cpanm GD  # this module is notorious for failing to build, but will work here
-    sudo cpanm GD::Polyline  # redundant; GD::Polyline is required to run circos
+    sudo cpanm --force GD  # this module is notorious for failing to build, but will work here
+    sudo cpanm --force Bio::Perl  # some tests fail but these error messages can be disregarded
 
-    sudo cpanm Bio::Perl Carp Clone CPAN::Meta CPAN::Meta::Check CPAN::Meta::YAML Config::General Cwd Data::Dumper Devel::OverloadInfo Devel::StackTrace Digest::MD5 Exception::Class Exporter::Tiny ExtUtils::Install File::Basename File::Copy File::Spec::Functions File::Spec::Link File::Temp File::Find::Rule::Perl File::HomeDir Filesys::Df FindBin Font::TTF::Font Getopt::Long IO::File List::MoreUtils List::Util Mac::SystemDirectory Math::Bezier Math::BigFloat Math::Round Math::VecStat Memoize Module::Build Module::Build::Tiny Module::Metadata Module::Runtime Module::Runtime::Conflicts Moose Number::Format Parse::CPAN::Meta Params::Validate POSIX Readonly Regexp::Common SVG Set::IntSpan Statistics::Basic Statistics::Descriptive Storable Sub::Identify Sys::Hostname Test::CleanNamespaces Test::Harness Test::Most Test::Warnings Text::Balanced Text::Format Time::HiRes XML::Simple XML::Twig
+    sudo cpanm Algorithm::Munkres Array::Compare Convert::Binary::C Graph HTML::TableExtract PostScript::TextBlock SOAP::Lite SVG::Graph Set::Scalar Sort::Naturally Spreadsheet::ParseExcel XML::DOM XML::DOM::XPath XML::Parser::PerlSAX XML::SAX::Writer YAML Carp Clone CPAN::Meta CPAN::Meta::Check CPAN::Meta::YAML Config::General Cwd Data::Dumper Devel::OverloadInfo Devel::StackTrace Digest::MD5 Exception::Class Exporter::Tiny ExtUtils::Install File::Basename File::Copy File::Spec::Functions File::Spec::Link File::Temp File::Find::Rule::Perl File::HomeDir Filesys::Df FindBin Font::TTF::Font Getopt::Long IO::File List::MoreUtils List::Util Mac::SystemDirectory Math::Bezier Math::BigFloat Math::Round Math::VecStat Memoize Module::Build Module::Build::Tiny Module::Metadata Module::Runtime Module::Runtime::Conflicts Moose Number::Format Parse::CPAN::Meta Params::Validate POSIX Readonly Regexp::Common SVG Set::IntSpan Statistics::Basic Statistics::Descriptive Storable Sub::Identify Sys::Hostname Test::CleanNamespaces Test::Harness Test::Most Test::Warnings Text::Balanced Text::Format Time::HiRes XML::Simple XML::Twig
 
-If at any point you discover a Perl module that you're missing, installation should be as simple as
+If at any point you discover a Perl module that you're missing, installation *should* be as simple as
 
     sudo cpanm <Module::Name>
 
@@ -280,12 +281,12 @@ Occasionally it can be helpful to audit which Perl modules you already have inst
 
 ## Configure Python
 
-`pip` is a handy module installer for Python. Since we have both Python 2 and Python 3 installed (note that Python 3 is a *fork* of Python, not simply a newer version of Python 2), we will want to make sure that our Python modules are installed to support both versions. `pip` will install Python 2 modules; `pip3` will install Python 3 modules. Note that not all modules are compatible with both Python versions.
+`pip` is a handy module installer for Python. Since we have both Python 2 and Python 3 installed (note that Python 3 is a *fork* of Python, not simply a newer version of Python 2), we will want to make sure that our Python modules are installed to support both versions. `pip2` will install Python 2 modules; `pip3` will install Python 3 modules. Note that not all modules are compatible with both Python versions.
 
-    sudo -H pip install requests[security]
-    sudo -H pip install --upgrade pip setuptools
-    sudo -H pip install matplotlib
-    sudo -H pip install biopython cutadapt cython mpi4py rpython pysam checkm-genome jcvi pandas mkdocs sphinx bx-python jupyter virtualenv ngslib
+    sudo -H pip2 install requests[security]
+    sudo -H pip2 install --upgrade pip setuptools
+    sudo -H pip2 install matplotlib
+    sudo -H pip2 install alabaster appnope attrs Babel backports.shutil-get-terminal-size bcbio-gff beautifulsoup4 biopython bx-python bz2file cffi checkm-genome cryptography cssselect cutadapt cycler Cython deap decorator DendroPy docutils entrypoints gnureadline h5py html5lib idna imagesize ipykernel ipython ipython-genutils ipywidgets jcvi Jinja2 jsonschema jupyter jupyter-client jupyter-console jupyter-core khmer lxml MarkupSafe matplotlib mistune nbconvert nbformat ndg-httpsclient networkx notebook numpy oauthlib pandas parsel path.py pexpect pickleshare ptyprocess py pyasn1 pyasn1-modules pycparser PyDispatcher Pygments pyOpenSSL pyparsing pysam pytest python-dateutil pytz pyzmq qtconsole queuelib requests requests-oauthlib rpython scikit-learn scipy Scrapy ScreamingBackpack screed service-identity simplegeneric six snowballstemmer Sphinx sphinx-rtd-theme terminado tornado traitlets Twisted twython virtualenv w3lib widgetsnbextension zope.interface
 
 ### Optional: Install QIIME
 
@@ -301,7 +302,7 @@ Occasionally it can be helpful to audit which Perl modules you already have inst
     sudo -H pip3 install requests[security]
     sudo -H pip3 install --upgrade pip setuptools
     sudo -H pip3 install matplotlib
-    sudo -H pip3 install biopython cutadapt cython mpi4py rpython pysam checkm-genome jcvi pandas mkdocs sphinx bx-python jupyter virtualenv snakemake
+    sudo -H pip3 install alabaster appnope attrs Babel backports.shutil-get-terminal-size bcbio-gff beautifulsoup4 biopython bx-python bz2file cffi checkm-genome cryptography cssselect cutadapt cycler Cython deap decorator DendroPy docutils entrypoints gnureadline h5py html5lib idna imagesize ipykernel ipython ipython-genutils ipywidgets jcvi Jinja2 jsonschema jupyter jupyter-client jupyter-console jupyter-core khmer lxml MarkupSafe matplotlib mistune nbconvert nbformat ndg-httpsclient networkx notebook numpy oauthlib pandas parsel path.py pexpect pickleshare ptyprocess py pyasn1 pyasn1-modules pycparser PyDispatcher Pygments pyOpenSSL pyparsing pysam pytest python-dateutil pytz pyzmq qtconsole queuelib requests requests-oauthlib rpython scikit-learn scipy Scrapy ScreamingBackpack screed service-identity simplegeneric six snowballstemmer Sphinx sphinx-rtd-theme terminado tornado traitlets Twisted twython virtualenv w3lib widgetsnbextension zope.interface snakemake
 
 ## Install other Homebrew packages
 
