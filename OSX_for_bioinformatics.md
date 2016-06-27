@@ -207,7 +207,7 @@ Installing `findutils --with-default-names` causes a `brew doctor` error about c
 
 ## Install/upgrade other utilities
 
-Xcode now includes Perl 5.18 and so it is not necessary to `brew install perl`.
+Xcode now includes Perl 5.18 and so it is not necessary to `brew install perl` unless you specifically need the latest version (5.24 as of 2016-06-27).
 
 ````
 brew install emacs
@@ -238,17 +238,20 @@ brew install glib
 brew install gd --with-freetype
 brew install libcaca libconfig libtasn1 libtool libunistring zlib icu4c
 brew install expat tcl-tk open-mpi parallel openssl ncurses
+brew install vim --with-custom-perl=/usr/bin/perl --without-perl
 ```
+
+Installing `vim` with default settings will download Homebrew's Perl (v. 5.24) and cause problems. The above command installs the latest vim without upgrading to Perl 5.24.
 
 ## Configure Perl
 
-Many of my most frustrating installations somehow always seemed to involve missing Perl modules. Perl ships with its own shell called `cpan` which is used to intall Perl modules. While you *can* install modules locally (i.e. in your home directory), I've found that you're far less likely to encounter Perl problems if you install modules as root.
+Many of my most frustrating installations somehow always seemed to involve missing Perl modules. Perl ships with its own shell called `cpan` which can be used to intall Perl modules. While you *can* install modules as root, I've found that you're far less likely to encounter Perl problems across upgrades if you install modules in your home directory (local::lib).
 
-We're going to use `cpan` to install another module installer called `cpanminus`, but before we get to that point, we need to configure `cpan` itself. Enter the `cpan` shell as root:
+We're going to use `cpan` to install a simpler Perl module installer called `cpanminus`, but before we get to that point, we need to configure `cpan` itself. Copy and paste the entire line to configure `cpan` and enter the `cpan` shell:
 
-    sudo cpan
+    PERL_MM_OPT="INSTALL_BASE=$HOME/perl5" cpan local::lib
 
-You will be prompted to 'configure as much as possible automatically'. At this point, type `N` and **configure cpan manually!** It will first prompt you to select how you wish to install modules. Type `sudo`. You will then be taken through a few dozen other settings, all of which can be left as defaults. Eventually `cpan` will ask to select appropriate mirror sites for FTP, and you will be shown a prompt that looks like
+You will be prompted to 'configure as much as possible automatically'. Type `yes`. Eventually `cpan` will ask to select appropriate mirror sites for FTP, and you will be shown a prompt that looks like
 
     cpan[1]>
 
@@ -261,18 +264,24 @@ When this pan prompt appears, type
 
 This will return you to a normal command prompt, except now you will have `cpanminus` installed. **Note** that you can also install `cpanminus` with Homebrew, but I've found that it's best to use Perl's native setup to install Perl modules (the same goes for Python - see below).
 
+You need to add the following to your `~/.bash_profile` to tell Perl where to find your locally installed modules:
+
+    echo 'eval "$(perl -I$HOME/perl5/lib/perl5 -Mlocal::lib)"' >> ~/.bash_profile
+    source ~/.bash_profile
+
 ### Install Perl Modules
 
-Now that we have `cpanminus` installed, we will use it to install several Perl modules as root. The following is a list of Perl modules I've collected as dependencies for several useful and/or popular bioinformatics programs, so it's best to install them upfront and not to have to worry about them later:
+Now that we have `cpanminus` installed, we will use it to install several Perl modules. The following is a list of Perl modules I've collected as dependencies for several useful and/or popular bioinformatics programs, so it's best to install them upfront and not to have to worry about them later:
 
-    sudo cpanm --force GD  # this module is notorious for failing to build, but will work here
-    sudo cpanm --force Bio::Perl  # some tests fail but these error messages can be disregarded
+    cpanm --self-upgrade
+    cpanm --force GD  # this module is notorious for failing to build, but will work here
+    cpanm --force Bio::Perl  # some tests fail but these error messages can be disregarded
 
-    sudo cpanm Algorithm::Munkres Array::Compare Convert::Binary::C Graph HTML::TableExtract PostScript::TextBlock SOAP::Lite SVG::Graph Set::Scalar Sort::Naturally Spreadsheet::ParseExcel XML::DOM XML::DOM::XPath XML::Parser::PerlSAX XML::SAX::Writer YAML Carp Clone CPAN::Meta CPAN::Meta::Check CPAN::Meta::YAML Config::General Cwd Data::Dumper Devel::OverloadInfo Devel::StackTrace Digest::MD5 Exception::Class Exporter::Tiny ExtUtils::Install File::Basename File::Copy File::Spec::Functions File::Spec::Link File::Temp File::Find::Rule::Perl File::HomeDir Filesys::Df FindBin Font::TTF::Font Getopt::Long IO::File List::MoreUtils List::Util Mac::SystemDirectory Math::Bezier Math::BigFloat Math::Round Math::VecStat Memoize Module::Build Module::Build::Tiny Module::Metadata Module::Runtime Module::Runtime::Conflicts Moose Number::Format Parse::CPAN::Meta Params::Validate POSIX Readonly Regexp::Common SVG Set::IntSpan Statistics::Basic Statistics::Descriptive Storable Sub::Identify Sys::Hostname Test::CleanNamespaces Test::Harness Test::Most Test::Warnings Text::Balanced Text::Format Time::HiRes XML::Simple XML::Twig
+    cpanm Algorithm::Munkres Array::Compare Convert::Binary::C Graph HTML::TableExtract PostScript::TextBlock SOAP::Lite SVG::Graph Set::Scalar Sort::Naturally Spreadsheet::ParseExcel XML::DOM XML::DOM::XPath XML::Parser::PerlSAX XML::SAX::Writer YAML Carp Clone CPAN::Meta CPAN::Meta::Check CPAN::Meta::YAML Config::General Cwd Data::Dumper Devel::OverloadInfo Devel::StackTrace Digest::MD5 Exception::Class Exporter::Tiny ExtUtils::Install File::Basename File::Copy File::Spec::Functions File::Spec::Link File::Temp File::Find::Rule::Perl File::HomeDir Filesys::Df FindBin Font::TTF::Font Getopt::Long IO::File List::MoreUtils List::Util Mac::SystemDirectory Math::Bezier Math::BigFloat Math::Round Math::VecStat Memoize Module::Build Module::Build::Tiny Module::Metadata Module::Runtime Module::Runtime::Conflicts Moose Number::Format Parse::CPAN::Meta Params::Validate POSIX Readonly Regexp::Common SVG Set::IntSpan Statistics::Basic Statistics::Descriptive Storable Sub::Identify Sys::Hostname Test::CleanNamespaces Test::Harness Test::Most Test::Warnings Text::Balanced Text::Format Time::HiRes XML::Simple XML::Twig
 
 If at any point you discover a Perl module that you're missing, installation *should* be as simple as
 
-    sudo cpanm <Module::Name>
+    cpanm <Module::Name>
 
 Occasionally it can be helpful to audit which Perl modules you already have installed. I have a simple alias called `perlmodules` to a script [`.listmodules.pl`](https://github.com/jbadomics/install_help/blob/master/.listmodules.pl) which prints a list of installed modules to STDOUT. If you wish, clone the script into your home directory, make it executable, and add the following alias to your `.bash_profile`:
 
