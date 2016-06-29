@@ -294,7 +294,7 @@ Occasionally it can be helpful to audit which Perl modules you already have inst
 
     sudo -H pip2 install requests[security]
     sudo -H pip2 install --upgrade pip setuptools
-    sudo -H pip2 install matplotlib
+    sudo -H pip2 install matplotlib pysam==0.8.4
     sudo -H pip2 install alabaster appnope attrs Babel backports.shutil-get-terminal-size bcbio-gff beautifulsoup4 biopython bx-python bz2file cffi checkm-genome cryptography cssselect cutadapt cycler Cython deap decorator DendroPy docutils entrypoints gnureadline h5py html5lib idna imagesize ipykernel ipython ipython-genutils ipywidgets jcvi Jinja2 jsonschema jupyter jupyter-client jupyter-console jupyter-core khmer lxml MarkupSafe matplotlib mistune nbconvert nbformat ndg-httpsclient networkx notebook numpy oauthlib pandas parsel path.py pexpect pickleshare ptyprocess py pyasn1 pyasn1-modules pycparser PyDispatcher Pygments pyOpenSSL pyparsing pysam pytest python-dateutil pytz pyzmq qtconsole queuelib requests requests-oauthlib rpython scikit-learn scipy Scrapy ScreamingBackpack screed service-identity simplegeneric six snowballstemmer Sphinx sphinx-rtd-theme terminado tornado traitlets Twisted twython virtualenv w3lib widgetsnbextension zope.interface
 
 ### Optional: Install QIIME
@@ -310,7 +310,7 @@ Occasionally it can be helpful to audit which Perl modules you already have inst
 
     sudo -H pip3 install requests[security]
     sudo -H pip3 install --upgrade pip setuptools
-    sudo -H pip3 install matplotlib
+    sudo -H pip3 install matplotlib pysam==0.8.4
     sudo -H pip3 install alabaster appnope attrs Babel backports.shutil-get-terminal-size bcbio-gff beautifulsoup4 biopython bx-python bz2file cffi checkm-genome cryptography cssselect cutadapt cycler Cython deap decorator DendroPy docutils entrypoints gnureadline h5py html5lib idna imagesize ipykernel ipython ipython-genutils ipywidgets jcvi Jinja2 jsonschema jupyter jupyter-client jupyter-console jupyter-core khmer lxml MarkupSafe matplotlib mistune nbconvert nbformat ndg-httpsclient networkx notebook numpy oauthlib pandas parsel path.py pexpect pickleshare ptyprocess py pyasn1 pyasn1-modules pycparser PyDispatcher Pygments pyOpenSSL pyparsing pysam pytest python-dateutil pytz pyzmq qtconsole queuelib requests requests-oauthlib rpython scikit-learn scipy Scrapy ScreamingBackpack screed service-identity simplegeneric six snowballstemmer Sphinx sphinx-rtd-theme terminado tornado traitlets Twisted twython virtualenv w3lib widgetsnbextension zope.interface snakemake
 
 ## Install other Homebrew packages
