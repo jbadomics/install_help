@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        <meta name="author" content="Jon Badalamenti">
+        
+        <link rel="shortcut icon" href="./img/favicon.ico">
+
+	<title>Triple-booting a 2015 Macbook Pro</title>
+
+        <link href="./css/bootstrap-3.0.3.min.css" rel="stylesheet">
+        <link href="./css/font-awesome-4.0.3.css" rel="stylesheet">
+        <link rel="stylesheet" href="./css/highlight.css">
+        <link href="./css/base.css" rel="stylesheet">
+
+        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+        <![endif]-->
+
+        
+    </head>
+
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+
+        <!-- Collapsed navigation -->
+        <div class="navbar-header">
+            <!-- Expander button -->
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+
+            <!-- Main title -->
+            <a class="navbar-brand" href=".">Triple-booting a 2015 Macbook Pro</a>
+        </div>
+
+        <!-- Expanded navigation -->
+        <div class="navbar-collapse collapse">
+            <!-- Main navigation -->
+            <ul class="nav navbar-nav">
+            
+            
+                <li class="active">
+                    <a href=".">Home</a>
+                </li>
+            
+            
+            </ul>
+
+            <!-- Search, Navigation and Repo links -->
+            <ul class="nav navbar-nav navbar-right">
+                <li class="disabled">
+                    <a rel="next" >
+                        <i class="fa fa-arrow-left"></i> Previous
+                    </a>
+                </li>
+                <li class="disabled">
+                    <a rel="prev" >
+                        Next <i class="fa fa-arrow-right"></i>
+                    </a>
+                </li>
+                
+                <li>
+                    <a href="https://github.com/jbadomics/install_help">
+                        
+                            <i class="fa fa-github"></i>
+                        
+                        GitHub
+                    </a>
+                </li>
+                
+            </ul>
+        </div>
+    </div>
+</div>
+
+        <div class="container">
+            <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
+    <ul class="nav bs-sidenav">
+    
+        <li class="main active"><a href="#triple-booting-os-x-windows-81-and-ubuntu-1404-on-a-macbook-pro">Triple booting OS X, Windows 8.1, and Ubuntu 14.04 on a MacBook Pro</a></li>
+        
+            <li><a href="#tldr">tl;dr?</a></li>
+        
+            <li><a href="#required">Required:</a></li>
+        
+            <li><a href="#optional">Optional:</a></li>
+        
+            <li><a href="#required-but-hopefully-obvious-disclaimers">Required (but hopefully obvious) disclaimers</a></li>
+        
+            <li><a href="#installing-os-x">Installing OS X</a></li>
+        
+            <li><a href="#install-windows-81">Install Windows 8.1</a></li>
+        
+            <li><a href="#prepare-for-ubuntu-installation">Prepare for Ubuntu Installation</a></li>
+        
+            <li><a href="#install-ubuntu-1404-lts">Install Ubuntu 14.04 LTS</a></li>
+        
+            <li><a href="#repair-the-hybrid-mbr-created-during-ubuntu-installation">Repair the hybrid MBR created during Ubuntu installation</a></li>
+        
+            <li><a href="#install-refind">Install rEFInd</a></li>
+        
+            <li><a href="#create-a-shared-data-partition-optional">Create a shared data partition (optional)</a></li>
+        
+            <li><a href="#make-the-new-data-partition-play-nice-with-ubuntu">Make the new DATA partition play nice with Ubuntu</a></li>
+        
+            <li><a href="#odds-and-ends">Odds and Ends</a></li>
+        
+    
+    </ul>
+</div></div>
+            <div class="col-md-9" role="main">
+
+<h1 id="triple-booting-os-x-windows-81-and-ubuntu-1404-on-a-macbook-pro">Triple booting OS X, Windows 8.1, and Ubuntu 14.04 on a MacBook Pro</h1>
+<p>This page describes how to configure a 2015 MacBook Pro to triple boot OS X 10.11 (El Capitan), Windows 8.1, and Ubuntu 14.04 LTS. It assumes that you have a clean, working installation of OS X 10.11 El Capitan already installed. If you prefer to start with a clean hard drive and reinstall OS X, follow the steps under Installing OS X below; otherwise, skip ahead to Installing Windows 8.1.</p>
+<p>This protocol was successful as of Sept. 13, 2016 and was performed on a 15" 2015 MacBook Pro with Intel i7 processor, 16 GB RAM, and a 1 Terabyte hard drive. In theory, this procedure should work on any Apple computer capable of running El Capitan.</p>
+<h2 id="tldr">tl;dr?</h2>
+<p><strong>The basic steps are as follows (see below for details):</strong></p>
+<ol>
+<li>
+<p>From OS X, install Windows 8 via Boot Camp, providing only the disk space you need for Windows.</p>
+</li>
+<li>
+<p>Deactivate Core Storage on the primary OS X partition (so that it can be resized).</p>
+</li>
+<li>
+<p>Resize the primary OS X partition, leaving empty space between it and your Windows (i.e. BOOTCAMP partition).</p>
+</li>
+<li>
+<p>Install Ubuntu on (part of) the newly created empty space.</p>
+</li>
+<li>
+<p>Use GPT fdisk to change the master boot record (MBR) from hybrid (which the Ubuntu installation inevitably creates) to protective; otherwise, Windows will fail to boot.</p>
+</li>
+<li>
+<p>In OS X, format the remaining disk space (if any) as FAT for shared data storage.</p>
+</li>
+<li>
+<p>Change the primary user's UID in Ubuntu such that the shared FAT data partition is readable and writable across all three operating systems.</p>
+</li>
+<li>
+<p>In OS X, install rEFInd to enable operating system selection at boot.</p>
+</li>
+</ol>
+<h2 id="required">Required:</h2>
+<ul>
+<li>
+<p>a stable Internet connection, preferably wired. Apple's USB Ethernet adapter was recognized by all 3 operating systems and worked reliably during setup.</p>
+</li>
+<li>
+<p>a downloaded <code>.iso</code> file of Windows 8.1 (does not require its own dedicated thumb drive or partition).</p>
+</li>
+<li>
+<p>a dedicated Ubuntu 14.04 installation USB stick. Instructions for making one can be found here.</p>
+</li>
+<li>
+<p>administrator privileges.</p>
+</li>
+<li>
+<p>sufficient disk space for each OS.</p>
+</li>
+<li>
+<p>about 1.5 hours to get everything installed.</p>
+</li>
+<li>
+<p>a connection to AC power.</p>
+</li>
+<li>
+<p>a common username across all operating systems.</p>
+</li>
+</ul>
+<h2 id="optional">Optional:</h2>
+<ul>
+<li>
+<p>a USB mouse for right-clicking in Windows and Ubuntu while you're setting things up.</p>
+</li>
+<li>
+<p>additional disk space for a shared data partition</p>
+</li>
+<li>
+<p>a printed copy of these instructions :)</p>
+</li>
+</ul>
+<h2 id="required-but-hopefully-obvious-disclaimers">Required (but hopefully obvious) disclaimers</h2>
+<ul>
+<li>
+<p>I am not a computer expert. But I did stay at a Holiday Inn Express last night.</p>
+</li>
+<li>
+<p><strong>BACK UP ALL IMPORTANT DATA</strong> before proceeding!</p>
+</li>
+</ul>
+<h2 id="installing-os-x">Installing OS X</h2>
+<h3 id="create-bootable-os-x-installer">Create bootable OS X installer</h3>
+<p>Find a USB stick or external hard drive with at least 8 GB capacity, and transfer any important data off of it as this procedure will erase the disk.</p>
+<p>From the App Store, download OS X El Capitain <em>but do not begin the installation process</em>. In Finder, open Applications. You should see an app called "Install OS X El Capitan." Insert your (bootable) USB stick or external hard drive and open Finder to determine the name of your external disk. If you prefer, you can also erase the disk using Disk Utility and simply select the default "Untitled" name. The command below assumes the disk is named "Untitled" but modify as needed. Open Terminal and type: (<strong>NOTE:</strong> this will erase the disk!):</p>
+<pre><code>sudo /Applications/Install\ OS\ X\ El\ Capitan.app/Contents/Resources/createinstallmedia --volume /Volumes/Untitled --applicationpath /Applications/Install\ OS\ X\ El\ Capitan.app --nointeraction
+</code></pre>
+<p>and replace <code>/Volumes/Untitled</code> with the name of your external disk.</p>
+<h3 id="install-os-x-if-not-already-installed">Install OS X (if not already installed)</h3>
+<p>Reboot the computer and, with your installer disk connected, hold down the Option key. You will see a menu with different boot options. Select the yellow icon labeled "Install OS X El Capitan."</p>
+<p>When the installer loads, run Disk Utility. Select your internal hard drive and click "erase." Give the disk a name, and select GUID partition table and OS X Extended (Journaled). When the command completes, quit Disk Utility.</p>
+<p>Select "Install OS X" from the menu and select your hard disk (i.e. the one you just erased and reformatted) as the installation target. The system will reboot and eventually ask you for configuration/preferences. <strong>DO NOT transfer any files at this time.</strong> Do not enable FileVault encryption.</p>
+<h2 id="install-windows-81">Install Windows 8.1</h2>
+<p>A few other online tutorials for triple booting call for arresting the Windows Boot Camp installation process in order to install Ubuntu. None of them worked for me. I could only get Windows booting properly if I let Boot Camp run from start to finish, without interruption. Boot Camp requires that the destination hard drive have only one partition, and so Windows needs to be installed <em>before</em> Ubuntu. (This is a bit misleading, since an OS X-only partition actually has 3 partitions: the EFI system partition (ESP), the OS itself, and the OS X recovery partition. See for yourself: before proceeding, open a Terminal and type <code>diskutil list</code>.)</p>
+<ol>
+<li>
+<p>Open Applications --&gt; Utilities --&gt; Boot Camp Assistant.</p>
+</li>
+<li>
+<p>Select the <code>.iso</code> file you downloaded for Windows 8.1.</p>
+</li>
+<li>
+<p>Drag the slider to give <strong>only as much disk space as you want for Windows</strong>. In my case, I left ~60 GB for Windows at the end of the disk.</p>
+</li>
+<li>
+<p>Click continue. Boot Camp Assistant will download the required software and drivers, and will reboot automatically into the Windows 8.1 installer.</p>
+</li>
+<li>
+<p>Follow the prompts and select the option to customize the installation. You will then be shown a list of partitions. <strong>DO NOT</strong> add or remove any partitions. Click on the advanced options button, then select <code>Disk 0 Partition 5: BOOTCAMP</code>, and click Format. This will erase the Boot Camp partition that the Assistant created and reformat it as NTFS.</p>
+</li>
+<li>
+<p>Select <code>Disk 0 Partition 5: BOOTCAMP</code> and click Next.</p>
+</li>
+<li>
+<p>Grab a cup of coffee while Windows finishes its installation. It will reboot several times.</p>
+</li>
+<li>
+<p>The Windows installer will eventually bring up a Boot Camp dialog box. Click through the prompts to install drivers. When the Boot Camp installer finishes, click Reboot.</p>
+</li>
+</ol>
+<p>You should now have a stable dual-boot system, and (for the time being) there are two ways of selecting which OS you want to boot:</p>
+<ul>
+<li>
+<p>Press and hold the Option key on reboot</p>
+</li>
+<li>
+<p>Select the Startup Disk before you reboot. In OS X, go to System Preferences --&gt; Startup Disk, and select BOOTCAMP. In Windows, search for 'boot camp' and open the Windows version of the same utility; it can also be accessed via Control Panel.</p>
+</li>
+</ul>
+<p><strong>Before you proceed,</strong> make sure that you can safely reboot into both Windows and OS X.</p>
+<h2 id="prepare-for-ubuntu-installation">Prepare for Ubuntu Installation</h2>
+<p>By default, Apple does not allow existing partitions to be resized. This is because OS X occupies a "Core Storage" partition, which Google tells me no one really understands. Fortunately, this can be disabled.</p>
+<p>To review, we now have OS X taking up the first 940 GB, with Windows 8.1 taking up the last 60 GB. We want to shrink the existing OS X partition without modifying anything else.</p>
+<ol>
+<li>
+<p>Open a Terminal (Applications --&gt; Utilities --&gt; Terminal) and type:</p>
+<pre><code>diskutil cs list
+</code></pre>
+<p>You should see an output that looks something like this:</p>
+<pre><code>CoreStorage logical volume groups (1 found)
+|
++-- Logical Volume Group C2356C06-A89F-4334-AE29-D7390FB36A11
+    =========================================================
+    Name:         mac
+    Status:       Online
+    Size:         918372315136 B (918.4 GB)
+    Free Space:   18984960 B (19.0 MB)
+    |
+    +-&lt; Physical Volume CB7CE669-6B7C-44C4-9EC3-71E9A6072BF3
+    |   ----------------------------------------------------
+    |   Index:    0
+    |   Disk:     disk0s2
+    |   Status:   Online
+    |   Size:     918372315136 B (918.4 GB)
+    |
+    +-&gt; Logical Volume Family EA474DAB-C993-4A67-8DC8-18E4B1BF06E1
+        ----------------------------------------------------------
+        Encryption Type:         None
+        |
+        +-&gt; Logical Volume B3ECE9A1-8E51-444B-9D46-9E470BC92BC4  &lt;---- COPY THIS STRING
+            ---------------------------------------------------
+            Disk:                  disk1
+            Status:                Online
+            Size (Total):          918001008640 B (918.0 GB)
+            Revertible:            Yes (no decryption required)  &lt;--- This must say 'yes'
+            LV Name:               mac
+            Volume Name:           mac
+            Content Hint:          Apple_HFS
+</code></pre>
+</li>
+<li>
+<p>You should see a revertible logical volume. In a Terminal window type</p>
+<pre><code>diskutil cs revert B3ECE9A1-8E51-444B-9D46-9E470BC92BC4
+</code></pre>
+<p>where <code>B3ECE9A1-8E51-444B-9D46-9E470BC92BC4</code> is the UUID for your logical volume.</p>
+</li>
+<li>
+<p>Reboot.</p>
+</li>
+<li>
+<p>Reopen Terminal and type <code>diskutil list</code> to show all of your current disks and partitions.</p>
+</li>
+<li>
+<p>Type <code>diskutil cs list</code>. The output should say</p>
+<pre><code>No CoreStorage logical volume groups found
+</code></pre>
+</li>
+<li>
+<p>Reboot again, but this time boot into Recovery Mode by holding down Command + R as the system boots.</p>
+</li>
+<li>
+<p>Disable System Integrity Protection. This is required for installing GPT fdisk and rEFInd below. This is a security feature Apple introduced with El Capitan that protects certain low-level system directories, but fortunately this can be disabled. Within Recovery Mode, select Terminal from the Utilities pulldown menu and type</p>
+<pre><code>csrutil disable
+reboot
+</code></pre>
+</li>
+<li>
+<p>The computer should boot normally into OS X. Let's check our disk partitioning scheme again with <code>diskutil list</code>:</p>
+<pre><code>/dev/disk0 (internal, physical):
+   #:                       TYPE NAME                    SIZE       IDENTIFIER
+   0:      GUID_partition_scheme                        *1.0 TB     disk0
+   1:                        EFI EFI                     209.7 MB   disk0s1
+   2:                  Apple_HFS mac                     938.4 GB   disk0s2
+   3:                 Apple_Boot Recovery HD             650.0 MB   disk0s3
+   4:       Microsoft Basic Data BOOTCAMP                61.3 GB    disk0s4
+</code></pre>
+</li>
+<li>
+<p>Make note of the identifier for your primary OS X partition, in this case <code>disk0s2</code>.</p>
+</li>
+<li>
+<p>In Terminal type</p>
+<pre><code>diskutil resizeVolume /dev/disk0s2 80G
+</code></pre>
+<p>and resize your OS X partition to whatever size you want.</p>
+</li>
+</ol>
+<h2 id="install-ubuntu-1404-lts">Install Ubuntu 14.04 LTS</h2>
+<ol>
+<li>
+<p>Shut down the computer, disconnect all unnecessary peripherals, and insert a bootable USB Ubuntu installation disk.</p>
+</li>
+<li>
+<p>Turn on the computer. Immediately press and hold the Option key and wait for external devices to appear. Select your Ubuntu installation media.</p>
+</li>
+<li>
+<p>Select 'Try Ubuntu without installing'.</p>
+</li>
+<li>
+<p>When the Ubuntu desktop appears, click the 'Install Ubuntu' desktop icon.</p>
+</li>
+<li>
+<p>Follow the prompts until the Installation Type dialog box appears. Select 'something else.'</p>
+</li>
+<li>
+<p>You will see a listing of existing partitions (and available free space) on <code>/dev/sda</code>. Create (at minimum) the following in the ~860 GB of available disk space:</p>
+<ul>
+<li>
+<p>16 GB swap area</p>
+</li>
+<li>
+<p>24 GB ext4-formatted space for the <code>/</code> partition (or whatever size you prefer)</p>
+</li>
+<li>
+<p>the remaining free space as 'unformatted'</p>
+</li>
+</ul>
+</li>
+<li>
+<p>Note the number of the <code>/</code> partition you just assigned. For me it was `/dev/sda6'.</p>
+</li>
+<li>
+<p>From the pulldown 'device for bootloader installation', select whatever you identified in step 7.</p>
+</li>
+<li>
+<p>Click Next to verify your configuration and Install Ubuntu. Restart when prompted. The computer <em>should</em> reboot into OS X; if it does not, reboot again and hold down the Option key to select OS X.</p>
+</li>
+</ol>
+<h2 id="repair-the-hybrid-mbr-created-during-ubuntu-installation">Repair the hybrid MBR created during Ubuntu installation</h2>
+<p>Rod Smith is an expert on this topic so I'll simply defer to his tools for tackling boot issues and inconsistencies across different hardware and operating systems.</p>
+<p>Despite telling Ubuntu to put its bootloader on its own partition, the installation screws with the Master Boot Record (MBR) such that Windows would no longer boot for me, even after verifying above that it could. Ubuntu creates an unstable hybrid MBR that needs to be restored to a more stable protective MBR.</p>
+<ol>
+<li>
+<p>Download and install <a href="https://sourceforge.net/projects/gptfdisk/files/latest/download">GPT fdisk</a>.</p>
+</li>
+<li>
+<p>In Terminal, type</p>
+<pre><code>sudo gdisk /dev/disk0
+</code></pre>
+<p>which should show the MBR as hybrid.</p>
+</li>
+<li>
+<p>Then type the following, pressing Enter after each letter:</p>
+<pre><code>p  (to print the current MBR configuration)
+x  (to enter expert mode)
+n  (to create a new protective MBR)
+w  (to write the new configuration)
+</code></pre>
+</li>
+<li>
+<p>Type</p>
+<pre><code>sudo gdisk /dev/disk0
+</code></pre>
+<p>again and now the MBR should be listed as protective.</p>
+</li>
+</ol>
+<h2 id="install-refind">Install rEFInd</h2>
+<p>rEFInd is another awesome tool from Rod Smith that streamlines the multi-boot configuration, providing a handy list of options at startup.</p>
+<ol>
+<li>
+<p>Download <a href="https://sourceforge.net/projects/refind/files/0.10.3/refind-bin-0.10.3.zip/download">rEFInd</a>.</p>
+</li>
+<li>
+<p>Assuming OS X automatically unzips the file, open Terminal and type</p>
+<pre><code>cd ~/Downloads/refind-bin-0.10.3
+sudo ./refind-install
+</code></pre>
+<p>That's it! Try rebooting and you should see something like this:</p>
+</li>
+<li>
+<p>Verify that you can boot into each OS.</p>
+</li>
+</ol>
+<h2 id="create-a-shared-data-partition-optional">Create a shared data partition (optional)</h2>
+<p>The original intent of this procedure was to configure a MacBook Pro for DNA sequencing using the Oxford Nanopore <a href="https://nanoporetech.com/products/minion">MinION</a>. Its MinKNOW software runs best on Windows, but most bioinformatics tools are *NIX-based. I wanted a completely portable system that enabled remote data acquisition and analysis via a shared data partition comprising the bulk of the 1-TB PCIe hard drive. Ideally this partition should be readable and writable from all 3 operating systems.</p>
+<ol>
+<li>
+<p>In OS X, open Disk Utility.</p>
+</li>
+<li>
+<p>Select the hard drive, and click Partition. <strong>DO NOT erase or modify any of the existing OS partitions.</strong></p>
+</li>
+<li>
+<p>Click on the pie slice corresponding to the large chunk of unformatted space in the middle of the disk left after installing Ubuntu.</p>
+</li>
+<li>
+<p>Give that slice a name (e.g. DATA) and select FAT as the file system. Click OK. </p>
+</li>
+<li>
+<p>In a Terminal type</p>
+<pre><code>diskutil list
+</code></pre>
+<p>to see the hard disk configuration.</p>
+</li>
+</ol>
+<h2 id="make-the-new-data-partition-play-nice-with-ubuntu">Make the new DATA partition play nice with Ubuntu</h2>
+<p>Rather than your username, your UID is more important for establishing compatibility of files and permissions between OS X and Ubuntu. By default, your UID in OS X is 501, but in Ubuntu, your default UID is 1001. Fortunately, this can be changed:</p>
+<ol>
+<li>
+<p>Boot into Ubuntu.</p>
+</li>
+<li>
+<p>In System Preferences, create a temporary user account with administrator privileges.</p>
+</li>
+<li>
+<p>In a terminal, type</p>
+<pre><code>sudo passwd temp
+</code></pre>
+<p>where <code>temp</code> is the temporary username you just created. Enter a temporary password - it doesn't matter what it is, because you'll soon delete this user.</p>
+</li>
+<li>
+<p>In a terminal, type</p>
+<pre><code>sudo gedit /etc/login.defs
+</code></pre>
+<p>look for the line (Ctrl + F works) containing <code>UID_MIN</code> and change its value to 500. Save changes and quit Gedit.</p>
+</li>
+<li>
+<p>Reboot back into Ubuntu. <strong>Log in as the temporary user you just created.</strong></p>
+</li>
+<li>
+<p>Open a terminal window and type</p>
+<pre><code>sudo usermod -u 501 username
+</code></pre>
+<p>where <code>username</code> is your primary username.</p>
+</li>
+<li>
+<p>Reboot back into Ubuntu and login as your primary username.</p>
+</li>
+<li>
+<p>In a terminal window type</p>
+<pre><code>id -u username
+</code></pre>
+<p>where <code>username</code> is your primary username. Verify that your UID has been changed to 501.</p>
+</li>
+<li>
+<p>In System Preferences, delete the temporary user account you created in Step 2.</p>
+</li>
+</ol>
+<h2 id="odds-and-ends">Odds and Ends</h2>
+<ul>
+<li>
+<p>The FAT-formatted <code>DATA</code> partition you created should auto-mount in Ubuntu at <code>/media/username/DATA</code>. Try making a short plain text file and save it to that partition. Then reboot into OS X and add another line to the file. Then boot into Windows and verify that the file is readable and writeable across each OS.</p>
+</li>
+<li>
+<p>Once you have each OS up and running, <strong>install any recommended OS updates</strong> and configure each OS as you wish. </p>
+</li>
+<li>
+<p>Shameless plug: I have a detailed guide <a href="https://github.com/jbadomics/install_help/blob/master/OSX_for_bioinformatics.md">here</a> for getting OS X set up for bioinformatics.</p>
+</li>
+<li>
+<p>If duplicate boot menu options are bugging you, you can customize your rEFInd configuration. Details <a href="http://www.rodsbooks.com/refind/themes.html">here</a>.</p>
+</li>
+</ul></div>
+        </div>
+
+	<footer class="col-md-12">
+		<hr>
+		
+		<p>Documentation built with <a href="http://www.mkdocs.org/">MkDocs</a>.</p>
+	</footer>
+
+
+        <script src="./js/jquery-1.10.2.min.js"></script>
+        <script src="./js/bootstrap-3.0.3.min.js"></script>
+        <script src="./js/highlight.pack.js"></script>
+        <script src="./js/base.js"></script>
+    </body>
+</html>
