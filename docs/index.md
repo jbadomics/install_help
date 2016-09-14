@@ -30,7 +30,7 @@ This protocol was successful as of Sept. 13, 2016 and was performed on a 15" 201
 
 *   a downloaded `.iso` file of Windows 8.1 (does not require its own dedicated thumb drive or partition).
 
-*   a dedicated Ubuntu 14.04 installation USB stick. Instructions for making one can be found here.
+*   a dedicated Ubuntu 14.04 installation USB stick. Instructions for making one can be found [here](ubuntu installation usb not detected) (follow instructions under Manual Approach).
 
 *   administrator privileges.
 
@@ -205,7 +205,7 @@ To review, we now have OS X taking up the first 940 GB, with Windows 8.1 taking 
     
     *   the remaining free space as 'unformatted'
     
-7.  Note the number of the `/` partition you just assigned. For me it was `/dev/sda6'.
+7.  Note the number of the `/` partition you just assigned. For me it was `/dev/sda6`.
 
 8.  From the pulldown 'device for bootloader installation', select whatever you identified in step 7.
 
