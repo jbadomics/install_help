@@ -302,8 +302,8 @@ Occasionally it can be helpful to audit which Perl modules you already have inst
     cd ~/Downloads
     wget http://sourceforge.net/projects/pycogent/files/PyCogent/1.5.3/PyCogent-1.5.3.tgz
     tar -xvzf PyCogent-1.5.3.tgz
-    cp ~/Downloads/PyCogent-1.5.3/include/array_interface.h /usr/local/Cellar/python/2.7.12/Frameworks/Python.framework/Versions/2.7/include/python2.7/
-    cd /usr/local/Cellar/python/2.7.12/Frameworks/Python.framework/Versions/2.7/include/python2.7/
+    cp ~/Downloads/PyCogent-1.5.3/include/array_interface.h /usr/local/Cellar/python/2.7.12_2/Frameworks/Python.framework/Versions/2.7/include/python2.7/
+    cd /usr/local/Cellar/python/2.7.12_2/Frameworks/Python.framework/Versions/2.7/include/python2.7/
     ln -s /usr/local/lib/python2.7/site-packages/numpy/core/include/numpy
     sudo -H env CC=/usr/local/bin/gcc-6 pip2 install --global-option build_ext qiime
 
